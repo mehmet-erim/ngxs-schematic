@@ -4,6 +4,7 @@
   "description": "A schematics",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json --watch",
     "run:state": "schematics .:state --dryRun",
     "test": "npm run build && jasmine src/**/*_spec.js"
   },
