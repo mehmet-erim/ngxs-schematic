@@ -4,9 +4,9 @@
   "title": "State Schema",
   "type": "object",
   "properties": {
-    "index": {
-      "type": "number",
-      "default": 1
+    "path": {
+      "type": "string",
+      "default": "/projects/common/src/lib/"
     },
     "name": {
       "type": "string",

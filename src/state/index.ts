@@ -5,7 +5,8 @@ import {
   url,
   apply,
   template,
-  mergeWith
+  mergeWith,
+  move
 } from "@angular-devkit/schematics";
 import { strings } from "@angular-devkit/core";
 
@@ -17,7 +18,8 @@ export default function(options: any): Rule {
       template({
         ...options,
         ...strings
-      })
+      }),
+      move(options.path)
     ]);
 
     return mergeWith(sourceParametrizedTemplates);
