@@ -14,6 +14,9 @@ import { strings } from "@angular-devkit/core";
 
 export default function(options: any): Rule {
   return (tree: Tree, context: SchematicContext) => {
+    if (!options.path) {
+      options.path = "/src/app/store/";
+    }
     const sourceTemplates = url("./files");
 
     const sourceParametrizedTemplates = apply(sourceTemplates, [
@@ -29,13 +32,14 @@ export default function(options: any): Rule {
           const content: Buffer | null = tree.read(file.path);
           // console.log((content as Buffer).toString());
           if (content && !content.toString().includes(options.name)) {
-            let updated = "";
-            updated = (content.toString() + file.content.toString())
+            let updatedContent = "";
+            updatedContent = (content.toString() + file.content.toString())
               .split("\n")
               .filter(line => !!line)
               .sort()
               .join("\n");
-            tree.overwrite(file.path, updated);
+
+            tree.overwrite(file.path, updatedContent);
           }
         }
         return null;
