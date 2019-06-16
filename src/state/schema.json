@@ -6,7 +6,7 @@
   "properties": {
     "path": {
       "type": "string",
-      "default": "/projects/common/src/lib/"
+      "default": "/src/app/store/"
     },
     "name": {
       "type": "string",
