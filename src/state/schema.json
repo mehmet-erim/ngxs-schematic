@@ -17,6 +17,9 @@
         "$source": "argv",
         "index": 1
       }
+    },
+    "project": {
+      "type": "string"
     }
   },
   "required": ["name"]
