@@ -4,8 +4,9 @@
   "description": "Ngxs schematics",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "schematics": "schematics",
     "build:watch": "tsc -p tsconfig.json --watch",
-    "run:state": "schematics .:state",
+    "run:state": "yarn build && schematics .:state",
     "test": "npm run build && jasmine src/**/*_spec.js"
   },
   "keywords": [
@@ -22,10 +23,13 @@
   "schematics": "./src/collection.json",
   "dependencies": {
     "@angular-devkit/core": "^8.0.3",
-    "@angular-devkit/schematics": "^8.0.3",
+    "@angular-devkit/schematics": "^8.0.6",
     "@types/jasmine": "^3.3.9",
     "@types/node": "^8.0.31",
     "jasmine": "^3.3.1",
     "typescript": "3.4.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/schematics-cli": "^0.800.6"
   }
 }
