@@ -1,15 +1,17 @@
 {
-  "name": "ngxs-schematics",
-  "version": "0.0.0",
-  "description": "Ngxs schematics",
+  "name": "ngxs-schematic",
+  "version": "1.0.0",
+  "description": "Ngxs Schematics makes it easy to create a state files.",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "schematics": "schematics",
     "build:watch": "tsc -p tsconfig.json --watch",
+    "schematics": "schematics",
     "run:state": "yarn build && schematics .:state",
     "test": "npm run build && jasmine src/**/*_spec.js"
   },
   "keywords": [
+    "angular",
+    "angular schematics",
     "schematics",
     "ngxs schematics",
     "state schematics",
@@ -18,7 +20,10 @@
     "state",
     "store"
   ],
-  "author": "Mehmet Erim",
+  "author": {
+    "name": "Mehmet Erim",
+    "email": "mehmet@mehmeterim.com"
+  },
   "license": "MIT",
   "schematics": "./src/collection.json",
   "dependencies": {
