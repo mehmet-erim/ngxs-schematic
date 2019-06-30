@@ -90,3 +90,9 @@ Then, your project able to run the following code
 ```bash
 yarn ng generate state my-state
 ```
+
+For help:
+
+```bash
+yarn ng g ngxs-schematic:state --help
+```

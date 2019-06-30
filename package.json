@@ -1,6 +1,15 @@
 {
   "name": "ngxs-schematic",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mehmet-erim/ngxs-schematics.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/mehmet-erim/ngxs-schematic#readme",
+  "bugs": {
+    "url": "https://github.com/mehmet-erim/ngxs-schematic/issues"
+  },
   "description": "Ngxs Schematics makes it easy to create a state files.",
   "scripts": {
     "build": "tsc -p tsconfig.json",
