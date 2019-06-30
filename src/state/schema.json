@@ -9,7 +9,8 @@
       "$default": {
         "$source": "argv",
         "index": 0
-      }
+      },
+      "x-prompt": "What name would you like to use for the state?"
     },
     "path": {
       "type": "string",
@@ -20,6 +21,13 @@
     },
     "project": {
       "type": "string"
+    },
+    "module": {
+      "type": "string"
+    },
+    "skipImport": {
+      "type": "boolean",
+      "default": false
     }
   },
   "required": ["name"]

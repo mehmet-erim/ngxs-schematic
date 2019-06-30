@@ -13,7 +13,14 @@ import {
 } from '@angular-devkit/schematics';
 import { strings } from '@angular-devkit/core';
 import { Schema } from './schema';
-import { parseName, buildDefaultPath } from '../utils';
+import {
+  buildDefaultPath,
+  buildRelativePath,
+  addImportToModule,
+  insertImport,
+  InsertChange,
+} from '../utils';
+import * as ts from 'typescript';
 
 export default function(options: Schema): Rule {
   return (tree: Tree, context: SchematicContext) => {
@@ -28,12 +35,8 @@ export default function(options: Schema): Rule {
     const isLibrary = project.projectType === 'library';
     const defaultProjectPath = buildDefaultPath(project);
 
-    const parsedPath = parseName(defaultProjectPath, options.name);
-
-    const { name, path } = parsedPath;
-
     if (!options.path) {
-      options.path = `${path}/${isLibrary ? 'lib/' : 'store/'}`;
+      options.path = `${defaultProjectPath}/${isLibrary ? '' : 'store/'}`;
     }
 
     const sourceTemplates = url('./files');
@@ -65,6 +68,112 @@ export default function(options: Schema): Rule {
       }),
     ]);
 
+    if (!options.skipImport) {
+      overwriteModule(tree, options, isLibrary, defaultProjectPath);
+    }
+
     return mergeWith(sourceParametrizedTemplates);
   };
+}
+
+function overwriteModule(
+  tree: Tree,
+  options: Schema,
+  isLibrary: boolean,
+  defaultProjectPath: string,
+) {
+  const root = !isLibrary;
+  if (!options.module) {
+    options.module = isLibrary
+      ? `${defaultProjectPath}/${options.project}.module.ts`
+      : `${defaultProjectPath}/app.module.ts`;
+  }
+  if (tree.exists(options.module)) {
+    const content: Buffer | null = tree.read(options.module);
+
+    const moduleContent = (content as Buffer).toString('utf-8');
+
+    const statePath = `${options.path}states/${options.name}.state.ts`;
+    const relativePath = buildRelativePath(options.module, statePath);
+
+    const source = ts.createSourceFile(
+      options.module,
+      moduleContent,
+      ts.ScriptTarget.Latest,
+      true,
+    );
+
+    const isImported =
+      moduleContent.indexOf('NgxsModule.forRoot(') > -1 ||
+      moduleContent.indexOf('NgxsModule.forFeature(') > -1;
+
+    const storeNgModuleImport = addImportToModule(
+      source,
+      options.module,
+      isLibrary
+        ? `NgxsModule.forFeature([${strings.classify(options.name)}State])`
+        : `NgxsModule.forRoot([${strings.classify(options.name)}State])`,
+      relativePath,
+    ).shift();
+
+    const commonImports = [
+      insertImport(source, options.module, 'NgxsModule', '@ngxs/store'),
+      insertImport(
+        source,
+        options.module,
+        `${strings.classify(options.name)}State`,
+        `${relativePath}`,
+      ),
+      ...(isImported ? [] : [storeNgModuleImport]),
+    ];
+
+    const changes = [...commonImports];
+    const recorder = tree.beginUpdate(options.module);
+    for (const change of changes) {
+      if (change instanceof InsertChange) {
+        recorder.insertLeft(change.pos, change.toAdd);
+      }
+    }
+    tree.commitUpdate(recorder);
+
+    if (isImported) {
+      const newContent = (tree.read(options.module) as Buffer).toString(
+        'utf-8',
+      );
+
+      const contentArr = newContent.split('\n');
+
+      let lineIndex = -1;
+      const index = contentArr.findIndex(line => {
+        const i = line.indexOf(
+          `NgxsModule.for${isLibrary ? 'Feature' : 'Root'}(`,
+        );
+        if (i > -1) {
+          lineIndex = i;
+          return true;
+        }
+        return false;
+      });
+
+      if (
+        contentArr[index].indexOf(`${strings.classify(options.name)}State`) < 0
+      ) {
+        const focusIndex = contentArr[index].substr(lineIndex).indexOf('([');
+        if (focusIndex > -1) {
+          contentArr[index] =
+            contentArr[index].substr(0, lineIndex + focusIndex + 2) +
+            `${strings.classify(options.name)}State, ` +
+            contentArr[index].substr(lineIndex + focusIndex + 2);
+        } else {
+          const focusIndex2 = contentArr[index].substr(lineIndex).indexOf('(');
+          contentArr[index] =
+            contentArr[index].substr(0, lineIndex + focusIndex2 + 1) +
+            `[${strings.classify(options.name)}State]` +
+            contentArr[index].substr(lineIndex + focusIndex2 + 1);
+        }
+
+        tree.overwrite(options.module, contentArr.join('\n'));
+      }
+    }
+  }
 }
