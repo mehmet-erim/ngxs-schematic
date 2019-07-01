@@ -4,4 +4,10 @@
 
 .prettierrc
 .gitignore
+
 yarn.lock
+angular.json
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+LICENSE
+.github
