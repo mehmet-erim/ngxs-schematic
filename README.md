@@ -75,7 +75,7 @@ projects/example-app/src/ + store/
 "module": {
   "type": "string"
 },
-// Flag to setup the forRoot state or forFeature state.
+// Flag to setup the forRoot state or forFeature state. If you do not enter. Schematics will choose automaticly.
 "forRoot": {
   "type": "boolean"
 },

@@ -29,11 +29,10 @@
     },
     "forRoot": {
       "type": "string",
-      "description": "Flag to setup the forRoot state or forFeature state."
+      "description": "Flag to setup the forRoot state or forFeature state. If you do not enter. Schematics will choose automaticly."
     },
     "skipImport": {
       "type": "string",
-      "default": "false",
       "description": "Flag to importing NgModule."
     }
   },

@@ -35,22 +35,18 @@ export default function(options: Schema): Rule {
     const isLibrary = project.projectType === 'library';
     const defaultProjectPath = buildDefaultPath(project);
 
-    if (typeof options.forRoot !== 'undefined') {
+    options.forRoot =
+      ((options.forRoot as unknown) as string) == 'true' || undefined;
+
+    if (options.forRoot !== true) {
       options.forRoot =
-        ((options.forRoot as unknown) as string) == 'true' || undefined;
-
-      if (options.forRoot !== true) {
-        options.forRoot =
-          ((options.forRoot as unknown) as string) == 'false'
-            ? false
-            : !isLibrary;
-      }
+        ((options.forRoot as unknown) as string) == 'false'
+          ? false
+          : !isLibrary;
     }
 
-    if (typeof options.skipImport !== 'undefined') {
-      options.skipImport =
-        ((options.skipImport as unknown) as string) == 'true' || false;
-    }
+    options.skipImport =
+      ((options.skipImport as unknown) as string) == 'true' || false;
 
     if (!options.path) {
       options.path = `${defaultProjectPath}/${isLibrary ? '' : 'store/'}`;
