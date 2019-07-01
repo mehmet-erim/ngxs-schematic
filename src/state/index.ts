@@ -50,6 +50,15 @@ export default function(options: Schema): Rule {
 
     if (!options.path) {
       options.path = `${defaultProjectPath}/${isLibrary ? '' : 'store/'}`;
+    } else {
+      console.log(options.path.substr(options.path.length));
+      if (options.path.substr(0, 1) !== '/') {
+        options.path = '/' + options.path;
+      }
+
+      if (options.path.substr(options.path.length - 1) !== '/') {
+        options.path = '/' + options.path;
+      }
     }
 
     const sourceTemplates = url('./files');
