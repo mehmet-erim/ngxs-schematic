@@ -35,6 +35,23 @@ export default function(options: Schema): Rule {
     const isLibrary = project.projectType === 'library';
     const defaultProjectPath = buildDefaultPath(project);
 
+    if (typeof options.forRoot !== 'undefined') {
+      options.forRoot =
+        ((options.forRoot as unknown) as string) == 'true' || undefined;
+
+      if (options.forRoot !== true) {
+        options.forRoot =
+          ((options.forRoot as unknown) as string) == 'false'
+            ? false
+            : !isLibrary;
+      }
+    }
+
+    if (typeof options.skipImport !== 'undefined') {
+      options.skipImport =
+        ((options.skipImport as unknown) as string) == 'true' || false;
+    }
+
     if (!options.path) {
       options.path = `${defaultProjectPath}/${isLibrary ? '' : 'store/'}`;
     }
@@ -82,7 +99,6 @@ function overwriteModule(
   isLibrary: boolean,
   defaultProjectPath: string,
 ) {
-  const root = !isLibrary;
   if (!options.module) {
     options.module = isLibrary
       ? `${defaultProjectPath}/${options.project}.module.ts`
@@ -104,15 +120,16 @@ function overwriteModule(
     );
 
     const isImported =
-      moduleContent.indexOf('NgxsModule.forRoot(') > -1 ||
-      moduleContent.indexOf('NgxsModule.forFeature(') > -1;
+      moduleContent.indexOf(
+        `NgxsModule.${options.forRoot ? 'forRoot' : 'forFeature'}(`,
+      ) > -1;
 
     const storeNgModuleImport = addImportToModule(
       source,
       options.module,
-      isLibrary
-        ? `NgxsModule.forFeature([${strings.classify(options.name)}State])`
-        : `NgxsModule.forRoot([${strings.classify(options.name)}State])`,
+      options.forRoot
+        ? `NgxsModule.forRoot([${strings.classify(options.name)}State])`
+        : `NgxsModule.forFeature([${strings.classify(options.name)}State])`,
       relativePath,
     ).shift();
 
@@ -146,7 +163,7 @@ function overwriteModule(
       let lineIndex = -1;
       const index = contentArr.findIndex(line => {
         const i = line.indexOf(
-          `NgxsModule.for${isLibrary ? 'Feature' : 'Root'}(`,
+          `NgxsModule.for${options.forRoot ? 'Root' : 'Feature'}(`,
         );
         if (i > -1) {
           lineIndex = i;

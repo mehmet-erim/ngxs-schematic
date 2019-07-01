@@ -31,7 +31,7 @@ yarn add ngxs-schematic --dev
 ### Usage
 
 ```bash
-yarn ng generate ngxs-schematic:state <your-state-name> <your-path> --project <your-project-name>
+yarn ng generate ngxs-schematic:state <your-state-name> <your-path> --project <your-project-name> --module <your-module-path> --forRoot <true|false> --skipImport <true|false>
 ```
 
 Properties:
@@ -70,8 +70,20 @@ projects/example-app/src/ + store/
 */
 "project": {
   "type": "string"
+},
+// Your module path for the importing NgModule. If you do not enter. ngxs-schematic will find automaticly.
+"module": {
+  "type": "string"
+},
+// Flag to setup the forRoot state or forFeature state.
+"forRoot": {
+  "type": "boolean"
+},
+// Flag to importing NgModule.
+"skipImport": {
+  "type": "boolean",
+  "default": false
 }
-"required": ["name"]
 ```
 
 ### Another Usage
@@ -91,7 +103,7 @@ Then, your project able to run the following code
 yarn ng generate state my-state
 ```
 
-For help:
+Do you need help?
 
 ```bash
 yarn ng g ngxs-schematic:state --help
