@@ -86,6 +86,7 @@ projects/example-app/src/ + store/
 }
 ```
 
+<!--
 ### Another Usage
 
 Add the following code in your angular.json file.
@@ -102,6 +103,7 @@ Then, your project able to run the following code
 ```bash
 yarn ng generate state my-state
 ```
+-->
 
 Do you need help?
 
