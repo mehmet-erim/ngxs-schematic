@@ -21,7 +21,7 @@ Ngxs Schematics create a tree
 Run the following code in your terminal:
 
 ```bash
-npm install ngxs-schematic --dev
+npm install ngxs-schematic --save-dev
 
 # or if you are using yarn
 
