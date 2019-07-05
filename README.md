@@ -48,7 +48,7 @@ Properties:
 },
 /*
 Optional
-If you are do not enter a path,
+If you are not sure of the folder path,
 ngxs-schematic will use your selected project source path
 An app example src/app/store
 An lib example projects/core/src/lib
@@ -62,7 +62,7 @@ An lib example projects/core/src/lib
 },
 /*
 Optional
-If you are do not enter a project name,
+If you are not sure of the project name,
 ngxs-schematic will use your default project
 If your project an app,
 ngxs-schematic will create files under the store folder
@@ -71,11 +71,11 @@ projects/example-app/src/ + store/
 "project": {
   "type": "string"
 },
-// Your module path for the importing NgModule. If you do not enter. ngxs-schematic will find automaticly.
+// Your module path for the importing NgModule. If you do not enter. ngxs-schematic will find automatically.
 "module": {
   "type": "string"
 },
-// Flag to setup the forRoot state or forFeature state. If you do not enter. Schematics will choose automaticly.
+// Flag to setup the forRoot state or forFeature state. If you do not enter. Schematics will choose automatically.
 "forRoot": {
   "type": "boolean"
 },
