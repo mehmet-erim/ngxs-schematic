@@ -77,7 +77,7 @@ export default function(options: Schema): Rule {
 
           if (content && !content.toString().includes(options.name)) {
             let updatedContent = '';
-            updatedContent = (content.toString() + file.content.toString())
+            updatedContent = `${content.toString()}\n${file.content.toString()}`
               .split('\n')
               .filter(line => !!line)
               .sort()
