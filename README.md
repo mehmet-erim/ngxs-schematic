@@ -1,8 +1,8 @@
-# NGXS Schematics
+# NGXS Schematic
 
-Ngxs Schematics makes it easy to create a state files.
+Ngxs Schematic makes it easy to create a state files.
 
-Ngxs Schematics create a tree
+Ngxs Schematic create a tree
 
 ```treeview
 ├── states/
