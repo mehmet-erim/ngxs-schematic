@@ -1,12 +1,16 @@
-import { State, Action, StateContext } from '@ngxs/store';
+import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { <%= classify(name) %>Action } from '../actions/<%= dasherize(name) %>.actions';
 import { <%= classify(name) %> } from '../models/<%= dasherize(name) %>';
 
 @State<<%= classify(name) %>.State> ({
   name: '<%= classify(name) %>State',
-  defaults: {} as <%= classify(name) %>.State
+  defaults: {<%= camelize(name) %>: {}} as <%= classify(name) %>.State
 })
 export class <%= classify(name) %>State {
+  @Selector()
+  static get<%= classify(name) %>({ <%= camelize(name) %> }: <%= classify(name) %>.State) {
+    return <%= camelize(name) %>;
+  }
 
   constructor() { }
 
