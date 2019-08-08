@@ -4,7 +4,7 @@ import { <%= classify(name) %> } from '../models/<%= dasherize(name) %>';
 
 @State<<%= classify(name) %>.State> ({
   name: '<%= classify(name) %>State',
-  defaults: {<%= camelize(name) %>: {}} as <%= classify(name) %>.State
+  defaults: { <%= camelize(name) %>: {} } as <%= classify(name) %>.State
 })
 export class <%= classify(name) %>State {
   @Selector()
